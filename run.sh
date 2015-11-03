@@ -15,8 +15,12 @@ sed -e "s@{{ influxdb_url }}@${influxdb_url}@" -e "s/{{ influxdb_database }}/inf
 [[ $? -ne 0 ]] && exit 1
 cat /etc/opt/telegraf/telegraf.conf
 
-cd /host
-for dir in bin etc run lib lib64 opt usr var; do mount --bind /$dir $dir; done
-chroot /host /bin/bash
+# Remap all directories in /host
+for dir in /host/*; do
+	proot_args="$proot_args -b $dir:${dir##/host}" # ${dir##/host} => remove prefixed '/host' from $dir
+done
 
-chroot /host /opt/telegraf/telegraf -pidfile /var/run/telegraf/telegraf.pid -config /etc/opt/telegraf/telegraf.conf
+proot $proot_args \
+	/opt/telegraf/telegraf \
+	-pidfile /var/run/telegraf/telegraf.pid \
+	-config /etc/opt/telegraf/telegraf.conf $@
