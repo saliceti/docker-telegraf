@@ -71,6 +71,7 @@ if [ ! -z "$MEMCACHE" ]; then
 EOF
 fi
 
+cat <<EOF
 # An array of address to gather stats about. Specify an ip on hostname
 # with optional port. ie localhost, 10.0.0.1:11211, etc.
 #
