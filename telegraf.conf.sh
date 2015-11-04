@@ -92,7 +92,7 @@ $(echo ${TELEGRAF_INFLUX_TAGS:-} | tr : '\n')
   drop = ["cpu_time"]
 
 # Read metrics about disk usage by mount point
-[disk]
+#[disk]
 
 # Read metrics about disk IO by device
 [io]
